@@ -3,6 +3,7 @@
  *    Class creates and runs an Othello game, X angainst O
  */
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Board {
    // the current pieces on the Board
@@ -45,6 +46,8 @@ public class Board {
    // returns: true if successful, false if not
    // note: on a false return, the Board was not changed and currentPlayer remains the same
    public boolean makeMove(int x, int y) {
+      if (x < 0 || x > 7 || y < 0 || y > 7)
+        return false;
       // simple test if move is valid
       if (board[x][y] != '.') {
          return false;
@@ -131,7 +134,12 @@ public class Board {
    }
    // board accessor
    public Character[][] getArray() {
-      return board.clone();
+      Character[][] newBoard = board.clone();
+      for (int i = 0; i < newBoard.length; i++) {
+          newBoard[i] = board[i].clone();
+      }
+          
+      return newBoard;
    }
    // currentMove accessor
    public char getCurrentMove() {
@@ -197,7 +205,11 @@ public class Board {
    private boolean firstScan (int x, int y, int xc, int yc, char player) {
       int testX = x + xc;
       int testY = y + yc;
-      if(board[testX][testY] == otherPlayer(player)) {
+      if (testX < 0 || testY < 0)
+          return false;
+      else if (testX > 7 || testY > 7)
+          return false;
+      else if(board[testX][testY] == otherPlayer(player)) {
          return scan (testX, testY, xc, yc, player);
       }
 
@@ -251,7 +263,7 @@ public class Board {
       System.out.println(test.toString());
       test.makeMove(3, 5);
       System.out.println(test.toString());
-      System.out.println(test.getMoves('X').length);
+      System.out.println(Arrays.deepToString(test.getMoves('X')));
       System.out.println(test.countTiles('X'));
    }*/
 }
